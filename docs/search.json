@@ -4,13 +4,13 @@
     "href": "lizard_gwas.html",
     "title": "lizard_gwas",
     "section": "",
-    "text": "Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see https://quarto.org."
+    "text": "We are attempting to detect positive selection in the fence lizard genomes from haplotype distributions. Initially, we planned to use saltiLassi as described by DeGiorgio and Szpiech 2022. Due to some complications with the calculation of sliding window size, we are exploring other options.\nMost methods for detecting positive selection identify distortions in the spatial distribution of snps (i.e. certain snps may have an inflated frequency which can be seen in a site frequency spectrum). saltiLassi implements haplotypes, and therefore looks for distortions in the distribution of haplotypes in the genome. My understanding is that this allows us to measure or control for linkage disequilibrium. When certain snps are swept closer to fixation due to positive selection, nearby neutral alleles are more likely than distal alleles to be swept along. As a result, there is a tendency for long haplotypes to form that display lower diversity in the regions directly flanking positively selected snps. Lassi investigates these patterns by searching the genome at successively wider “windows” and comparing the haplotype distribution against a background distribution.\nClassic measures for ancestral/derived haplotypes are EHH (?) and the integrated haplotype score (iHS). These statistics compute haplotype homozygosity in a local genome region.\nLassi calculates the T-statistic, a larger value of which suggests a harder sweep. saltiLassi takes this a step further by integrating the spatial distribution into the likelihood model. According to DeGiorgio and Szpiech 2022, larger windows have higher power for determining ancient sweeps whereas smaller windows could better identify recent sweeps.\n\n\n\nAre we separating the populations in this analysis?\nWhat outputs do we expect from this analysis?"
   },
   {
-    "objectID": "lizard_gwas.html#running-code",
-    "href": "lizard_gwas.html#running-code",
+    "objectID": "lizard_gwas.html#stacks-pipeline",
+    "href": "lizard_gwas.html#stacks-pipeline",
     "title": "lizard_gwas",
-    "section": "Running Code",
-    "text": "Running Code\nWhen you click the Render button a document will be generated that includes both content and the output of embedded code. You can embed code like this:\n\n1 + 1\n\n[1] 2\n\n\nYou can add options to executable code like this\n\n\n[1] 4\n\n\nThe echo: false option disables the printing of code (only output is displayed)."
+    "section": "Stacks pipeline",
+    "text": "Stacks pipeline\n#| echo: false\n\npopulations -V vcf -O dir [-M popmap] (filters) [--fstats] [-k [--sigma=150000] [--bootstrap [-N 100]]] (output formats)\n--fstats — enable SNP and haplotype-based F statistics\n--fst_correction — specify a correction to be applied to Fst values: ‘p_value’. Default: off.\n-V,--in_vcf — path to an input VCF file.\n-M,--popmap — path to a population map. (Format is ’SAMPLE1 \\t POP1 \\n SAMPLE2\n-O,--out_path — path to a directory where to white the output files. (Required by -V; otherwise defaults to value of -P.)\n\nConsider data filtering\n\n-H,--filter-haplotype-wise — apply the above filters haplotype wise (unshared SNPs will be pruned to reduce haplotype-wise missing data).\nKernel-smoothing algorithm:\n\n-k,--smooth — enable kernel-smoothed π, FIS, FST, FST’, and ΦST calculations.\n\n\n\n#| echo: false\nls"
   }
 ]

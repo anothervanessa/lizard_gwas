@@ -14,14 +14,23 @@ Classic measures for ancestral/derived haplotypes are EHH (?) and the integrated
 
 Lassi calculates the T-statistic, a larger value of which suggests a harder sweep. saltiLassi takes this a step further by integrating the spatial distribution into the likelihood model. According to DeGiorgio and Szpiech 2022, larger windows have higher power for determining ancient sweeps whereas smaller windows could better identify recent sweeps.
 
+It looks to me like STACKS main purpose is to process RAD-seq data, genotype call, and plot PCA/smoothed statistics like Fst. I haven't found anything that indicates we can use this for the same purpose as LASSI, but maybe I am missing something.
+
 ### Some questions I have:
 
 1.  Are we separating the populations in this analysis?
+    1.  If so then I need to create a population map for the samples
 2.  What outputs do we expect from this analysis?
+    1.  something like T-statistic or iHS. I didn't see any mention of similar statistics in Stacks documentation.
+3.  Are we attempting to use Stacks to assemble haplotypes to input to Lassi?
 
 ## Stacks pipeline
 
-```{unix}
+[Stacks parameters](https://besjournals.onlinelibrary.wiley.com/doi/10.1111/2041-210X.12775)
+
+[Stacks protocol](https://www.nature.com/articles/nprot.2017.123)
+
+```{unix}}
 #| echo: false
 
 populations -V vcf -O dir [-M popmap] (filters) [--fstats] [-k [--sigma=150000] [--bootstrap [-N 100]]] (output formats)
@@ -45,9 +54,13 @@ populations -V vcf -O dir [-M popmap] (filters) [--fstats] [-k [--sigma=150000] 
 
     -   **-k,\--smooth** --- enable kernel-smoothed π, F~IS~, F~ST~, F~ST~', and Φ~ST~ calculations.
 
-    -   
-
-```{unix}
+```{unix}}
 #| echo: false
 ls
 ```
+
+## SnpR r Package
+
+<https://rdrr.io/github/hemstrow/snpR/f/README.md>
+
+This may present an alternative for the genome wide scans, however it is snp based. It seems like PJ prefers us to explore the haplotype based scans.
