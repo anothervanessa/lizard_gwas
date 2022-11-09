@@ -6,15 +6,46 @@ editor: visual
 
 ## Genome scan for positive selection
 
-## Running Code
+We are attempting to detect positive selection in the fence lizard genomes from haplotype distributions. Initially, we planned to use saltiLassi as described by DeGiorgio and Szpiech 2022. Due to some complications with the calculation of sliding window size, we are exploring other options.
 
-When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+Most methods for detecting positive selection identify distortions in the spatial distribution of snps (i.e. certain snps may have an inflated frequency which can be seen in a site frequency spectrum). saltiLassi implements haplotypes, and therefore looks for distortions in the distribution of haplotypes in the genome. My understanding is that this allows us to measure or control for linkage disequilibrium. When certain snps are swept closer to fixation due to positive selection, nearby neutral alleles are more likely than distal alleles to be swept along. As a result, there is a tendency for long haplotypes to form that display lower diversity in the regions directly flanking positively selected snps. Lassi investigates these patterns by searching the genome at successively wider "windows" and comparing the haplotype distribution against a background distribution.
 
-```{r}
-1 + 1
+Classic measures for ancestral/derived haplotypes are EHH (?) and the integrated haplotype score (iHS). These statistics compute haplotype homozygosity in a local genome region.
+
+Lassi calculates the T-statistic, a larger value of which suggests a harder sweep. saltiLassi takes this a step further by integrating the spatial distribution into the likelihood model. According to DeGiorgio and Szpiech 2022, larger windows have higher power for determining ancient sweeps whereas smaller windows could better identify recent sweeps.
+
+### Some questions I have:
+
+1.  Are we separating the populations in this analysis?
+2.  What outputs do we expect from this analysis?
+
+## Stacks pipeline
+
+```{unix}
+#| echo: false
+
+populations -V vcf -O dir [-M popmap] (filters) [--fstats] [-k [--sigma=150000] [--bootstrap [-N 100]]] (output formats)
 ```
 
-You can add options to executable code like this
+**\--fstats** --- enable SNP and haplotype-based F statistics
+
+**\--fst_correction** --- specify a correction to be applied to Fst values: 'p_value'. Default: off.
+
+**-V,\--in_vcf** --- path to an input VCF file.
+
+**-M,\--popmap** --- path to a population map. (Format is 'SAMPLE1 \\t POP1 \\n SAMPLE2
+
+**-O,\--out_path** --- path to a directory where to white the output files. (Required by -V; otherwise defaults to value of -P.)
+
+###      Consider data filtering
+
+-   **-H,\--filter-haplotype-wise** --- apply the above filters haplotype wise (unshared SNPs will be pruned to reduce haplotype-wise missing data).
+
+    ### Kernel-smoothing algorithm:
+
+    -   **-k,\--smooth** --- enable kernel-smoothed π, F~IS~, F~ST~, F~ST~', and Φ~ST~ calculations.
+
+    -   
 
 ```{unix}
 #| echo: false
