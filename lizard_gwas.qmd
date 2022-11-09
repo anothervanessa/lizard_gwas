@@ -21,8 +21,8 @@ It looks to me like STACKS main purpose is to process RAD-seq data, genotype cal
 1.  Are we separating the populations in this analysis?
     1.  If so then I need to create a population map for the samples
 2.  What outputs do we expect from this analysis?
-    1.  something like T-statistic or iHS. I didn't see any mention of similar statistics in Stacks documentation.
-3.  Are we attempting to use Stacks to assemble haplotypes to input to Lassi?
+    1.  something like T-statistic or iHS. I didn't see any mention of similar statistics in Stacks documentation. Stacks will only calculate pi, Fst, and another F-statistic
+3.  Are we attempting to use Stacks to assemble haplotypes to input to Lassi? Or are we interested in using the Fst/pi smoothing feature?
 
 ## Stacks pipeline
 
